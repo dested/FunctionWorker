@@ -15,9 +15,8 @@
                     break;
             }
         }, false);
-        var script = "(function (_e) {" +
-                "(" + func.toString() + ")(_e);" +
-                    "})";
+        var script = "(function (_e) { (" + func.toString() + ")(_e);})";
+        
         var toSend = "{ caller: " + script + " }";
         worker.postMessage(toSend); // Send data to our worker.
     };
@@ -27,12 +26,9 @@
 self.addEventListener('message', function (e) {
     var f;
     eval("f=" + e.data);
-    var aj;
-    eval("aj=({ callback: function (j) { self.postMessage({data:j,state:'callback'}); }, data: 2});" +
-        "(" + f.caller + ")(aj);");
+    var aj; 
+    eval("aj=({ callback: function (j) { self.postMessage({data:j,state:'callback'}); }, data: 0}); (" + f.caller + ")(aj);");
     self.postMessage({ data: aj.data, state: 'finished' });
 }, false);
 
-
-
-
+ 
